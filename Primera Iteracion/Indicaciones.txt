@@ -1,0 +1,7 @@
+-Primera iteracion de la logica que tendra nuestro crucigrama
+*Falta adjuntar ANDROIDSTUDIO
+*Falta adjuntar ANDENGINE
+
+
+Ing. Ivan en esta semana estamos adjuntando los casos de uso, softwares y los complementos necesarios con los 
+que estamos trabajando nuestro crucigrama.
