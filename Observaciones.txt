@@ -1,0 +1,8 @@
+Observaciones Casos de Uso
+-------------------------------------------------------
+- No entregó en la fecha
+ 
+Observaciones segundo avance
+----------------------------------------------------------
+- Hacer commits mas frecuentes y regulares
+- No olvidar hacer merge de las observaciones que se les alcanzan en pull-request
