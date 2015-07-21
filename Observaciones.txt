@@ -6,3 +6,8 @@ Observaciones segundo avance
 ----------------------------------------------------------
 - Hacer commits mas frecuentes y regulares
 - No olvidar hacer merge de las observaciones que se les alcanzan en pull-request
+
+Observaciones tercer avance
+-------------------------------
+- hay muy pocos commits
+- Buen intento de colaboración
