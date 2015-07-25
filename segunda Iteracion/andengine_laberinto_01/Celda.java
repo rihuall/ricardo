@@ -119,6 +119,9 @@ public class Celda extends Sprite{
                     myGrilla.setSelectedCelda(this);
                 }
                 words.get(indexSelect).selectWord();
+                if(Bridge.theHeadBoard != null)
+                    Bridge.theHeadBoard.setMyTextClue(words.get(indexSelect).getClue());
+
             }
             selectMain.setColor(0.3f, 0.5f, 0.2f, SELECT_MAIN);
         }

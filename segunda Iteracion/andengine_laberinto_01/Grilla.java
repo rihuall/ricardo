@@ -19,11 +19,11 @@ public class Grilla {
     private String[][] grilla;
     private Celda[][] celdas;
     private Celda[] celdasSeleccionadas;
-
+    
     private ITextureRegion celdaTextureRegion;
     VertexBufferObjectManager vertexBufferObjectManager;
     private Font myFont;
-
+    
     private ArrayList<Word> wordsHorizontal;
     private ArrayList<Word> wordsVertical;
     private Word selectedWord;
@@ -66,10 +66,10 @@ public class Grilla {
         //wordsHorizontal.add(new Word("VictorianoOZ", 1, 0, 0, this, scene));
         //wordsHorizontal.add(new Word("CONTRERAS", 3, 0, 0, this, scene));
         //wordsVertical.add(new Word("AVECAHTQWSDX", 0, 0, 1, this, scene));
-        wordsHorizontal.add(new Word("AUFER","", 0, 0, 0, this, rectangulo, scene));
-        wordsHorizontal.add(new Word("VictorianoOZ", "", 1, 0, 0, this, rectangulo,scene));
-        wordsHorizontal.add(new Word("CONTRERAS", "", 3, 0, 0, this, rectangulo,scene));
-        wordsVertical.add(new Word("AVECAHTQWSDX", "", 0, 0, 1, this, rectangulo,scene));
+        wordsHorizontal.add(new Word("AUFER","Hola mundo", 0, 0, 0, this, rectangulo, scene));
+        wordsHorizontal.add(new Word("VictorianoOZ", "Este es mi segundo nombre", 1, 0, 0, this, rectangulo,scene));
+        wordsHorizontal.add(new Word("CONTRERAS", "Es un apellido que te contradice", 3, 0, 0, this, rectangulo,scene));
+        wordsVertical.add(new Word("AVECAHTQWSDX", "seleccion al azar de caracteres", 0, 0, 1, this, rectangulo,scene));
         //recorremos la grilla
         /*
         for(int i = 0; i < grilla.length; i++){

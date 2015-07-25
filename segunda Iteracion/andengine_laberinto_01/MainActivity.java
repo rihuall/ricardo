@@ -64,11 +64,13 @@ public class MainActivity extends SimpleBaseGameActivity {
         //creamos elementos visibles
         HeadBoard headBoard = new HeadBoard(getVertexBufferObjectManager(), myFont);//sin patron singleton
         headBoard.addToScene(scene);
+        Bridge.theHeadBoard = headBoard;
         //Celda unaCelda = new Celda(camera.getWidth()/2, camera.getHeight()/2, celdaTextureRegion, getVertexBufferObjectManager(), myFont);
         Grilla myGrilla = new Grilla(celdaTextureRegion, getVertexBufferObjectManager(), myFont);
         myGrilla.generar(scene);
         //unaCelda.addToScene(scene);
-
+        FootBoard footBoard = new FootBoard(celdaTextureRegion, getVertexBufferObjectManager(), myFont, scene);
+        //footBoard.addToScene(scene);
 
         //scene.attachChild(rectangulo);
         return this.scene;

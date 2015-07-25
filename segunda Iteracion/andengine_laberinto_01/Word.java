@@ -18,9 +18,10 @@ public class Word {
     private ArrayList<Celda> celdas;
 
     //public Word(String theWord, int row, int  col, int sentidoHV, Grilla theGrilla, Scene scene){//ITextureRegion celTRegion, VertexBufferObjectManager vertBuffObjMngr, Font myFont, Scene scene){
-    public Word(String theWord, String clue, int row, int  col, int sentidoHV, Grilla theGrilla, Rectangle rectangulo, Scene scene){//ITextureRegion celTRegion, VertexBufferObjectManager vertBuffObjMngr, Font myFont, Scene scene){
+    public Word(String theWord, String theClue, int row, int  col, int sentidoHV, Grilla theGrilla, Rectangle rectangulo, Scene scene){//ITextureRegion celTRegion, VertexBufferObjectManager vertBuffObjMngr, Font myFont, Scene scene){
         this.grilla = theGrilla;
         this.word = theWord;
+        this.clue = theClue;
         this.celdas = new ArrayList<Celda>();
 
         if(sentidoHV == 0 ){//Horizontal
@@ -95,9 +96,11 @@ public class Word {
                 celda.setRowCol(row + i, col);
                 celda.addWord(this);//guardo pertenencia de la celda
                 celda.setGrilla(this.grilla);
-                if(!exists)
-                //celda.addToScene(scene);
-                rectangulo.attachChild(celda);
+                if(!exists){
+                    //celda.addToScene(scene);
+                    scene.registerTouchArea(celda);
+                    rectangulo.attachChild(celda);
+                }
                 //celdas[i][j] = celda;
                 celdas.add(celda);//OJO con el object
             }
@@ -121,6 +124,10 @@ public class Word {
             }
         }
         return null;
+    }
+
+    public String getClue(){
+        return clue;
     }
 
 }
