@@ -16,14 +16,10 @@ public class Grilla {
     public static final int MARGIN = 6;
     public static final int SIZE = 480;
 
-    private String[][] grilla;
-    private Celda[][] celdas;
-    private Celda[] celdasSeleccionadas;
-    
     private ITextureRegion celdaTextureRegion;
     VertexBufferObjectManager vertexBufferObjectManager;
     private Font myFont;
-    
+
     private ArrayList<Word> wordsHorizontal;
     private ArrayList<Word> wordsVertical;
     private Word selectedWord;
@@ -52,23 +48,21 @@ public class Grilla {
         scene.attachChild(rectangulo);
         //scene.registerTouchArea(rectangulo);
         String [][] unaGrilla =  {//ES AL REVES
-                {"A","U","F","E","R"},//COLUMNA 1
+                {"R","I","H","U","A"},//COLUMNA 1
                 {"P","O","D","E","R"},
                 {"H","I","J","O","S"},
                 {"P","O","L","O","S"},
                 {"Q","U","E","S","O"},
                 {"V","I","S","T","Z"},
                 };
-        grilla = unaGrilla;
 
-        celdas = new Celda[grilla.length][grilla[0].length];
-        //wordsHorizontal.add(new Word("AUFER", 0, 0, 0, this, scene));
-        //wordsHorizontal.add(new Word("VictorianoOZ", 1, 0, 0, this, scene));
-        //wordsHorizontal.add(new Word("CONTRERAS", 3, 0, 0, this, scene));
+        //wordsHorizontal.add(new Word("rihuall", 0, 0, 0, this, scene));
+        //wordsHorizontal.add(new Word("VictorOZ", 1, 0, 0, this, scene));
+        //wordsHorizontal.add(new Word("CORONEL", 3, 0, 0, this, scene));
         //wordsVertical.add(new Word("AVECAHTQWSDX", 0, 0, 1, this, scene));
-        wordsHorizontal.add(new Word("AUFER","Hola mundo", 0, 0, 0, this, rectangulo, scene));
-        wordsHorizontal.add(new Word("VictorianoOZ", "Este es mi segundo nombre", 1, 0, 0, this, rectangulo,scene));
-        wordsHorizontal.add(new Word("CONTRERAS", "Es un apellido que te contradice", 3, 0, 0, this, rectangulo,scene));
+        wordsHorizontal.add(new Word("AUTOR","Hola mundo", 0, 0, 0, this, rectangulo, scene));
+        wordsHorizontal.add(new Word("VictorZ", "Este es mi segundo nombre", 1, 0, 0, this, rectangulo,scene));
+        wordsHorizontal.add(new Word("VARGAS", "Es un apellido que te contradice", 3, 0, 0, this, rectangulo,scene));
         wordsVertical.add(new Word("AVECAHTQWSDX", "seleccion al azar de caracteres", 0, 0, 1, this, rectangulo,scene));
         //recorremos la grilla
         /*
@@ -85,15 +79,6 @@ public class Grilla {
         */
     }
 
-    public void seleccionarCR(int posI,int posJ){//seleccionar Column o Row
-
-        celdasSeleccionadas = new Celda[celdas[0].length];
-        for(int i = 0; i < grilla.length; i++){
-            celdas[i][posJ].selectCelda();
-            celdasSeleccionadas[i] = celdas[i][posJ];
-        }
-
-    }
     public void createCeldas(int origenConstant, int origenVariable, String word){
         for(int i = 0; i < word.length(); i++){
 
@@ -134,5 +119,19 @@ public class Grilla {
 
     public void setSelectedCelda(Celda selectedCelda) {
         this.selectedCelda = selectedCelda;
+    }
+
+    public void writeInCell(String aLetter){
+        selectedCelda.selectSecondaryCelda();
+        selectedCelda.setLetra(aLetter);
+        selectNextCell();
+    }
+    public void selectNextCell(){
+        Celda newSelectCelda;
+        newSelectCelda = selectedWord.getNextCeldaTo(selectedCelda.getRow(), selectedCelda.getCol());
+        if(newSelectCelda != null){
+            selectedCelda = newSelectCelda;
+        }
+
     }
 }

@@ -24,7 +24,7 @@ public class Word {
         this.clue = theClue;
         this.celdas = new ArrayList<Celda>();
 
-        if(sentidoHV == 0 ){//Horizontal
+        if(sentidoHV == 0){//Horizontal == true
             //debe aumentar en column (EJE X)
             for(int i = 0; i < word.length(); i++ ){
                 Celda celda = null;
@@ -45,12 +45,13 @@ public class Word {
                         (col+i+1)*Celda.SIZE_SIDE -(Celda.SIZE_SIDE/2)+Grilla.MARGIN,
                         //MainActivity.CAMARA_HEIGHT-((row+1)*Celda.SIZE_SIDE+HeadBoard.HEAD_HEIGHT),
                         Grilla.SIZE-(row+1)*Celda.SIZE_SIDE +(Celda.SIZE_SIDE/2)-Grilla.MARGIN,
+                        word.substring(i, i + 1),//extraigo una letra
                         grilla.getCeldaTextureRegion(),
                         grilla.getVertexBufferObjectManager(),
                         grilla.getMyFont());
                 //}
                 //celda.setLetra(grilla[i][j]);
-                celda.setLetra(word.substring(i, i + 1));//extraigo una letra
+                //celda.setLetra(word.substring(i, i + 1));//extraigo una letra
                 celda.setRowCol(row, col + i);
                 celda.addWord(this);//guardo pertenencia de la celda
                 celda.setGrilla(this.grilla);
@@ -61,7 +62,7 @@ public class Word {
                 celdas.add(celda);//OJO con el object
 
             }
-        }else{//Vertical verificar si la celda ya esta
+        }else{//Vertical (False) verificar si la celda ya esta
             //debe aumentar en row (EJE Y)
             for(int i = 0; i < word.length(); i++ ){
                 Celda celda = null;
@@ -87,12 +88,13 @@ public class Word {
                             (col+1)*Celda.SIZE_SIDE -(Celda.SIZE_SIDE/2)+Grilla.MARGIN,
                             //MainActivity.CAMARA_HEIGHT-((row+i+1)*Celda.SIZE_SIDE+HeadBoard.HEAD_HEIGHT),
                             Grilla.SIZE-(row+i+1)*Celda.SIZE_SIDE +(Celda.SIZE_SIDE/2)-Grilla.MARGIN,
+                            word.substring(i, i + 1),
                             grilla.getCeldaTextureRegion(),
                             grilla.getVertexBufferObjectManager(),
                             grilla.getMyFont());
                 }
                 //celda.setLetra(grilla[i][j]);
-                celda.setLetra(word.substring(i, i + 1));//extraigo una letra
+                //celda.setLetra(word.substring(i, i + 1));//extraigo una letra
                 celda.setRowCol(row + i, col);
                 celda.addWord(this);//guardo pertenencia de la celda
                 celda.setGrilla(this.grilla);
@@ -109,7 +111,7 @@ public class Word {
 
     public void selectWord(){
         for(Celda celda : celdas){
-            celda.selectCelda();
+            celda.selectSecondaryCelda();
         }
     }
     public void deselectWord(){
@@ -130,5 +132,19 @@ public class Word {
         return clue;
     }
 
+    public Celda getNextCeldaTo(int rowBackCell, int colBackCell){
+        int next = 0;
+        for(Celda celda : celdas){
+            next++;
+            if(celda.isEqualsRowCol(rowBackCell, colBackCell)){
+                if(next>=celdas.size()){
+                    next=celdas.size()-1;
+                }
+                celdas.get(next).selectMainCelda();
+                return  celdas.get(next);
+            }
+        }
+        return null;
+    }
 }
 

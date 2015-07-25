@@ -15,7 +15,8 @@ import org.andengine.util.adt.color.Color;
  */
 public class FootBoard extends Rectangle{
     public static final int FOOT_HEIGHT = 160;
-    public static final float SIZE_SIDE = 39; //32;//tamaño lado
+    public static final float SIZE_SIDE = 64; //32;//tamaño lado
+    public static final float MARGIN = 16; //
 
     public FootBoard( ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, Font myFont, Scene scene) {
 
@@ -40,7 +41,11 @@ public class FootBoard extends Rectangle{
                     @Override
                     public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
                         if(pSceneTouchEvent.isActionUp()){
-                            unTextofoot.setText("N");
+                            //unTextofoot.setText("N");
+                            if(Bridge.theGrilla != null){
+                                Bridge.theGrilla.writeInCell(unTextofoot.getText().toString());
+                            }
+
                         }
                         return true;
                         //super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY)

@@ -45,7 +45,7 @@ public class Celda extends Sprite{
     private ArrayList<Word> words;// palabras a las que pertenece la celda
     private int indexSelect = 0;
 
-    public Celda(float pX, float pY, ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, Font myFont) {
+    public Celda(float pX, float pY,String laLetra, ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, Font myFont) {
         super(pX, pY, pTextureRegion, pVertexBufferObjectManager);
 
         this.words = new ArrayList<Word>();
@@ -54,7 +54,8 @@ public class Celda extends Sprite{
 
         myLetter = new Text(this.getWidth()/2, this.getHeight()/2, myFont, "ABCDEFGHYJKLMNÑOPQRSTUVWXYZ", getVertexBufferObjectManager());
         myLetter.setColor(Color.BLACK);
-        myLetter.setText("W");
+        letra = laLetra;
+        myLetter.setText(laLetra);
         //myLetter.setSize(this.getWidth()*0.5f,this.getHeight()*0.5f);
 
         this.setScale(SIZE_SIDE/this.getWidth());
@@ -64,7 +65,10 @@ public class Celda extends Sprite{
 
 
     }
-    public void selectCelda(){
+    public void selectMainCelda(){
+        selectMain.setColor(0.3f, 0.5f, 0.2f, SELECT_MAIN);
+    }
+    public void selectSecondaryCelda(){
         selectMain.setColor(0.3f, 0.1f, 0.5f, SELECT_SECONDARY);
     }
     public void deselectCelda(){
@@ -75,8 +79,10 @@ public class Celda extends Sprite{
         this.posRow = posRow;
         this.posCol = posCol;
     }
+    public int getRow(){return posRow;}
+    public int getCol(){return posCol;}
     public boolean isEqualsRowCol(int aRow, int aCol){
-        return (this.posRow==aRow);
+        return (this.posRow==aRow)&&(this.posCol==aCol);
     }
 
     public void setGrilla(Grilla unaGrilla){
@@ -91,8 +97,8 @@ public class Celda extends Sprite{
     }
 
     public void setLetra(String unaLetra){
-        letra = unaLetra;
-        myLetter.setText(letra);
+        //letra = unaLetra;
+        myLetter.setText(unaLetra);
     }
     @Override
     public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY){
@@ -123,8 +129,11 @@ public class Celda extends Sprite{
                     Bridge.theHeadBoard.setMyTextClue(words.get(indexSelect).getClue());
 
             }
-            selectMain.setColor(0.3f, 0.5f, 0.2f, SELECT_MAIN);
+            selectMainCelda();
         }
         return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+    }
+    private int getDireccion(){
+        return indexSelect;
     }
 }

@@ -7,4 +7,5 @@ import org.andengine.entity.text.Text;
  */
 public class Bridge {
     public static HeadBoard theHeadBoard;
+    public static Grilla theGrilla;
 }
