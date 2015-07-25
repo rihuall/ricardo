@@ -1,5 +1,6 @@
 package com.example.mipc.andengine_laberinto_01;
 
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +14,9 @@ import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
+import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -24,8 +28,8 @@ import java.io.IOException;
 
 public class MainActivity extends SimpleBaseGameActivity {
 
-    private static final int CAMARA_WIDTH = 800;
-    private static final int CAMARA_HEIGHT = 800;
+    public static final int CAMARA_WIDTH = 480;
+    public static final int CAMARA_HEIGHT = 800;
 
     private Camera camera;
     private Scene scene;
@@ -50,14 +54,21 @@ public class MainActivity extends SimpleBaseGameActivity {
         this.scene = new Scene();
         this.scene.setBackground(new Background(0.9804f, 0.6274f, 0.8784f));
         //Probamos la celda
-        Celda unaCelda = new Celda();
-        Rectangle selectMain = new Rectangle(0,0,32,32, getVertexBufferObjectManager());
-        Rectangle selectSecondary = new Rectangle(0,0,32,32, getVertexBufferObjectManager());
-        unaCelda.createCelda(
-                new Sprite(200, 600, celdaTextureRegion, getVertexBufferObjectManager()),
-                selectMain
-                );
-        unaCelda.addToScene(scene);
+
+        FontFactory.setAssetBasePath("fuentes/");
+        final ITexture fontTexture = new BitmapTextureAtlas(getTextureManager(), 256, 256, TextureOptions.BILINEAR);//textura para la fuente
+        Font myFont;
+        myFont = FontFactory.createFromAsset(getFontManager(), fontTexture, getAssets(), "fuente.ttf", 28, true, Color.WHITE);
+        myFont.load();
+
+        //creamos elementos visibles
+        HeadBoard headBoard = new HeadBoard(getVertexBufferObjectManager(), myFont);//sin patron singleton
+        headBoard.addToScene(scene);
+        //Celda unaCelda = new Celda(camera.getWidth()/2, camera.getHeight()/2, celdaTextureRegion, getVertexBufferObjectManager(), myFont);
+        Grilla myGrilla = new Grilla(celdaTextureRegion, getVertexBufferObjectManager(), myFont);
+        myGrilla.generar(scene);
+        //unaCelda.addToScene(scene);
+
 
         //scene.attachChild(rectangulo);
         return this.scene;
@@ -68,7 +79,8 @@ public class MainActivity extends SimpleBaseGameActivity {
         camera = new Camera(0,0, CAMARA_WIDTH, CAMARA_HEIGHT);
         EngineOptions engineOptions = new EngineOptions(
                 true,
-                ScreenOrientation.LANDSCAPE_FIXED,
+                //ScreenOrientation.LANDSCAPE_FIXED,//horizontal
+                ScreenOrientation.PORTRAIT_FIXED,//Vertical
                 new FillResolutionPolicy(),
                 camera);
         return engineOptions;
