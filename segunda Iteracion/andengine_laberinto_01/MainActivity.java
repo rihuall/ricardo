@@ -1,4 +1,4 @@
-package com.example.mipc.andengine_laberinto_01;
+﻿package com.example.mipc.andengine_laberinto_01;
 
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
@@ -89,7 +89,7 @@ public class MainActivity extends SimpleBaseGameActivity {
         return engineOptions;
     }
 }
-// 1.- onCreateEngineOptions() --- creas las opciones del motor
-// 2.- onCreateResources() --- cargas los elementos a usar
-// 3.- onCreateScene() --- creas la escena
-// 4.- onPopulateScene --- creas las entidades del juego
+// 1.- onCreateEngineOptions() ----- creas las opciones del motor
+// 2.- onCreateResources() --- ------cargas los elementos a usar
+// 3.- onCreateScene() ------------- creas la escena
+// 4.- onPopulateScene --- ----------creas las entidades del juego
