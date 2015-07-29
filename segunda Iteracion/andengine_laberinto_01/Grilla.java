@@ -48,7 +48,7 @@ public class Grilla {
         scene.attachChild(rectangulo);
         //scene.registerTouchArea(rectangulo);
         String [][] unaGrilla =  {//ES AL REVES
-                {"E","I","H","U","A"},//COLUMNA 1
+                {"A","U","F","E","R"},//COLUMNA 1
                 {"P","O","D","E","R"},
                 {"H","I","J","O","S"},
                 {"P","O","L","O","S"},
@@ -56,13 +56,13 @@ public class Grilla {
                 {"V","I","S","T","Z"},
                 };
 
-        //wordsHorizontal.add(new Word("hola", 0, 0, 0, this, scene));
-        //wordsHorizontal.add(new Word("VictorOZ", 1, 0, 0, this, scene));
-        //wordsHorizontal.add(new Word(RONEL", 3, 0, 0, this, scene));
+        //wordsHorizontal.add(new Word("AUFER", 0, 0, 0, this, scene));
+        //wordsHorizontal.add(new Word("VictorianoOZ", 1, 0, 0, this, scene));
+        //wordsHorizontal.add(new Word("CONTRERAS", 3, 0, 0, this, scene));
         //wordsVertical.add(new Word("AVECAHTQWSDX", 0, 0, 1, this, scene));
-        wordsHorizontal.add(new Word("LIBRO","Hola mundo", 0, 0, 0, this, rectangulo, scene));
-        wordsHorizontal.add(new Word("HEctorZ", "Este es mi segundo nombre", 1, 0, 0, this, rectangulo,scene));
-        wordsHorizontal.add(new Word("GAS", "Es un apellido que te contradice", 3, 0, 0, this, rectangulo,scene));
+        wordsHorizontal.add(new Word("AUFER","Hola mundo", 0, 0, 0, this, rectangulo, scene));
+        wordsHorizontal.add(new Word("VictorianoOZ", "Este es mi segundo nombre", 1, 0, 0, this, rectangulo,scene));
+        wordsHorizontal.add(new Word("CONTRERAS", "Es un apellido que te contradice", 3, 0, 0, this, rectangulo,scene));
         wordsVertical.add(new Word("AVECAHTQWSDX", "seleccion al azar de caracteres", 0, 0, 1, this, rectangulo,scene));
         //recorremos la grilla
         /*

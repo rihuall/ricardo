@@ -15,7 +15,9 @@ import org.andengine.util.adt.color.Color;
  */
 public class FootBoard extends Rectangle{
     public static final int FOOT_HEIGHT = 160;
-    public static final float SIZE_SIDE = 64; //32;//tamaño lado
+    public static final float SIZE_SIDE = 60; //32;//tamaño lado
+    public static final float SIZE_SIDE_THREE_BOTTOM = 50;
+
     public static final float MARGIN = 16; //
 
     public FootBoard( ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, Font myFont, Scene scene) {
@@ -27,37 +29,118 @@ public class FootBoard extends Rectangle{
                 , pVertexBufferObjectManager);
         this.setColor(0.35f, 0.46f, 0.65f);//Colo de fondo de la cabecera
 
-
         //creo los botones
-        final Text unTextofoot = new Text(SIZE_SIDE/2,SIZE_SIDE/2, myFont, "ABCDEFGHYJKLMNÑOPQRSTUVWXYZ", getVertexBufferObjectManager());
-        unTextofoot.setColor(Color.RED);
-        unTextofoot.setText("M");
-        Sprite unBotonFoot = new Sprite(
-                SIZE_SIDE,
-                FOOT_HEIGHT - SIZE_SIDE,
-                SIZE_SIDE, SIZE_SIDE,
+        createBotonsFoot(pTextureRegion, pVertexBufferObjectManager, myFont, scene);
+        createThreeBoton(pTextureRegion, pVertexBufferObjectManager, myFont, scene);
+
+        scene.attachChild(this);
+    }
+
+    private void createBotonsFoot(ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, Font myFont, Scene scene){
+        char[] aLetters = {'a','b','c','d','e','f','g','h','i','j','k','l'};
+        for(int i = 0; i < 12; i++) {//12 vueltas 12 botones
+            final Text unTextofoot = new Text(SIZE_SIDE / 2, SIZE_SIDE / 2, myFont, "ABCDEFGHYJKLMNÑOPQRSTUVWXYZ", getVertexBufferObjectManager());
+            unTextofoot.setColor(Color.RED);
+            unTextofoot.setText(""+aLetters[i]);
+            Sprite unBotonFoot = new Sprite(
+                    (SIZE_SIDE + MARGIN)/2 + ((i%6)*(SIZE_SIDE+MARGIN/2)),
+                    (FOOT_HEIGHT - (((int)(i/6)+1)*(SIZE_SIDE + MARGIN/2)-SIZE_SIDE/2)),
+                    SIZE_SIDE, SIZE_SIDE,
+                    pTextureRegion,
+                    pVertexBufferObjectManager) {
+
+                        @Override
+                        public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+                            if (pSceneTouchEvent.isActionUp()) {
+                                //unTextofoot.setText("N");
+                                if (Bridge.theGrilla != null) {
+                                    Bridge.theGrilla.writeInCell(unTextofoot.getText().toString());
+                                }
+
+                            }
+                            return true;
+                            //super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY)
+                        }
+                    };
+            unBotonFoot.attachChild(unTextofoot);
+
+            this.attachChild(unBotonFoot);
+            scene.registerTouchArea(unBotonFoot);
+        }
+    }
+
+    private void createThreeBoton(ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, Font myFont, Scene scene){
+
+        float unMargen = (FOOT_HEIGHT-(SIZE_SIDE_THREE_BOTTOM*3))/4;
+        float posX = MainActivity.CAMARA_WIDTH-SIZE_SIDE_THREE_BOTTOM/2 - unMargen;
+        float posY = FOOT_HEIGHT-SIZE_SIDE_THREE_BOTTOM/2 - unMargen;
+
+        final Text textofoot1 = new Text(SIZE_SIDE_THREE_BOTTOM / 2,SIZE_SIDE_THREE_BOTTOM / 2,
+                myFont, "<", getVertexBufferObjectManager());
+        final Text textofoot2 = new Text(SIZE_SIDE_THREE_BOTTOM / 2,SIZE_SIDE_THREE_BOTTOM / 2,
+                myFont, "@", getVertexBufferObjectManager());
+        final Text textofoot3 = new Text(SIZE_SIDE_THREE_BOTTOM / 2, SIZE_SIDE_THREE_BOTTOM / 2,
+                myFont, "*", getVertexBufferObjectManager());
+
+        textofoot1.setColor(Color.RED);textofoot2.setColor(Color.RED);textofoot3.setColor(Color.RED);
+        textofoot1.setText("<");textofoot2.setText("@");textofoot3.setText("*");
+
+        Sprite botonFoot1 = new Sprite(
+                posX,posY,
+                SIZE_SIDE_THREE_BOTTOM, SIZE_SIDE_THREE_BOTTOM,
                 pTextureRegion,
-                pVertexBufferObjectManager){
+                pVertexBufferObjectManager) {
                     @Override
                     public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-                        if(pSceneTouchEvent.isActionUp()){
-                            //unTextofoot.setText("N");
-                            if(Bridge.theGrilla != null){
-                                Bridge.theGrilla.writeInCell(unTextofoot.getText().toString());
-                            }
-
+                        if (pSceneTouchEvent.isActionUp()) {
+                            //hace algo especial
                         }
                         return true;
                         //super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY)
                     }
                 };
-        unBotonFoot.attachChild(unTextofoot);
+        Sprite botonFoot2 = new Sprite(
+                posX,posY-(SIZE_SIDE_THREE_BOTTOM+unMargen),
+                SIZE_SIDE_THREE_BOTTOM, SIZE_SIDE_THREE_BOTTOM,
+                pTextureRegion,
+                pVertexBufferObjectManager) {
+                    @Override
+                    public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+                        if (pSceneTouchEvent.isActionUp()) {
+                            //hace algo especial
+                        }
+                        return true;
+                        //super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY)
+                    }
+                };
+        Sprite botonFoot3 = new Sprite(
+                posX,posY-((SIZE_SIDE_THREE_BOTTOM+unMargen)*2),
+                SIZE_SIDE_THREE_BOTTOM, SIZE_SIDE_THREE_BOTTOM,
+                pTextureRegion,
+                pVertexBufferObjectManager) {
+                    @Override
+                    public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+                        if (pSceneTouchEvent.isActionUp()) {
+                            //hace algo especial
+                        }
+                        return true;
+                        //super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY)
+                    }
+                };
 
-        this.attachChild(unBotonFoot);
-        scene.registerTouchArea(unBotonFoot);
-        scene.attachChild(this);
+        botonFoot1.attachChild(textofoot1);
+        botonFoot2.attachChild(textofoot2);
+        botonFoot3.attachChild(textofoot3);
+
+        //textofoot1.setText("@");
+
+        this.attachChild(botonFoot1);
+        this.attachChild(botonFoot2);
+        this.attachChild(botonFoot3);
+        scene.registerTouchArea(botonFoot1);
+        scene.registerTouchArea(botonFoot2);
+        scene.registerTouchArea(botonFoot3);
     }
-
     public void activateButtonsLetters(){
         //Activar los botones
 
