@@ -1,5 +1,10 @@
 package com.example.mipc.andengine_laberinto_01;
 
+import com.example.mipc.andengine_laberinto_01.CrosswordGenerator.Generator;
+import com.example.mipc.andengine_laberinto_01.CrosswordGenerator.Grid;
+import com.example.mipc.andengine_laberinto_01.CrosswordGenerator.WordInGrid;
+import com.example.mipc.andengine_laberinto_01.CrosswordGenerator.WordsDic;
+
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.font.Font;
@@ -8,6 +13,9 @@ import org.andengine.opengl.vbo.VertexBufferObject;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by MIPC on 27/05/2015.
@@ -57,36 +65,50 @@ public class Grilla {
         rectangulo.setColor(0.0f, 0.0f, 0.0f);
         myScene.attachChild(rectangulo);
         //scene.registerTouchArea(rectangulo);
-        String [][] unaGrilla =  {//ES AL REVES
-                {"e","I","H","A","L"},//COLUMNA 1
-                {"P","O","D","E","R"},
-                {"H","I","J","O","S"},
-                {"P","O","L","O","S"},
-                {"Q","U","E","S","O"},
-                {"V","I","S","T","Z"},
-                };
+        Grid grid = new Grid(12,12);
+        WordsDic dic = new WordsDic();
 
-        //wordsHorizontal.add(new Word("HOLA", 0, 0, 0, this, scene));
-        //wordsHorizontal.add(new Word("Victor", 1, 0, 0, this, scene));
-        //wordsHorizontal.add(new Word("RONEL", 3, 0, 0, this, scene));
-        //wordsVertical.add(new Word("AVECAHTQWSDX", 0, 0, 1, this, scene));
-        wordsHorizontal.add(new Word("FER","Hola mundo", 0, 0, 0, this, rectangulo, myScene));
-        wordsHorizontal.add(new Word("VicZ", "Este es mi segundo nombre", 1, 0, 0, this, rectangulo, myScene));
-        wordsHorizontal.add(new Word("CZZZZ", "Es un apellido que te contradice", 3, 0, 0, this, rectangulo,myScene));
-        wordsVertical.add(new Word("AVECAHTQWSDX", "seleccion al azar de caracteres", 0, 0, 1, this, rectangulo, myScene));
-        //recorremos la grilla
+        List<String> words = new ArrayList<String>(dic.getDictionary().keySet());
+
+        Generator gen = new Generator(grid, words);
+
+        int usedCount = gen.generate();
+
+
+        HashMap<Integer, WordInGrid> horizontalAnnex = gen.getHorizontalAnnex();
+        HashMap<Integer, WordInGrid> verticalAnnex = gen.getVerticalAnnex();
+
+        wordsHorizontal = uploadInformation(horizontalAnnex, dic, 0);
+        wordsVertical = uploadInformation(verticalAnnex, dic, 1);
+
+        System.out.println("cant horizontal " + wordsHorizontal.size());
+        System.out.println("cant vertical "+wordsVertical.size());
+        grid.show();
+        gen = null;
+        words = null;
+        dic =null;
         /*
-        for(int i = 0; i < grilla.length; i++){
-            for(int j = 0; j < grilla[0].length; j++){
-                Celda celda = new Celda((i+1)*Celda.SIZE_SIDE, (j+1)*Celda.SIZE_SIDE, celdaTextureRegion,  vertexBufferObjectManager,  myFont);
-                celda.setLetra(grilla[i][j]);
-                celda.setRowCol(i, j);
-                celda.setGrilla(this);
-                celda.addToScene(scene);
-                celdas[i][j] = celda;
-            }
-        }
+        wordsHorizontal.add(new Word("RHUALL","Hola mundo", 0, 0, 0, this, rectangulo, myScene));
+        wordsHorizontal.add(new Word("RAUL", "Este es mi segundo nombre", 1, 0, 0, this, rectangulo, myScene));
+        wordsHorizontal.add(new Word("HUAMAN", "Es un apellido que te contradice", 3, 0, 0, this, rectangulo,myScene));
+        wordsVertical.add(new Word("AVECAHTQWSDX", "seleccion al azar de caracteres", 0, 0, 1, this, rectangulo, myScene));
         */
+    }
+
+    private ArrayList<Word> uploadInformation(HashMap<Integer, WordInGrid> annex, WordsDic dic, int sentidoHV){
+        ArrayList<Word> wordsHV = new ArrayList<Word>();
+        List<Integer> list = new ArrayList<Integer>(annex.keySet());
+        Collections.sort(list);
+        for(Integer key : list){
+            System.out.println(" "+sentidoHV+" "+annex.get(key).getRow()+" - "+annex.get(key).getCol()+annex.get(key).getWord()+ "- "+dic.getDictionary().get(annex.get(key).getWord()));
+            wordsHV.add(new Word(
+                    annex.get(key).getWord(),
+                    dic.getDictionary().get(annex.get(key).getWord()),
+                    annex.get(key).getCol(),
+                    annex.get(key).getRow(),
+                    sentidoHV, this, rectangulo, myScene));
+        }
+        return wordsHV;
     }
 
     public void createCeldas(int origenConstant, int origenVariable, String word){

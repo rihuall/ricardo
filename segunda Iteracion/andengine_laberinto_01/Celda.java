@@ -52,7 +52,7 @@ public class Celda extends Sprite{
         this.selectMain = new Rectangle(this.getWidth() / 2, this.getHeight() / 2,32,32, getVertexBufferObjectManager());
         selectMain.setColor(0.9f, 0.1f, 0.2f, NO_SELECT);//.detachChild(this);
 
-        myLetter = new Text(this.getWidth()/2, this.getHeight()/2, myFont, "ABCDEFGHYJKLMNÑOPQRSTUVWXYZ", getVertexBufferObjectManager());
+        myLetter = new Text(this.getWidth()/2, this.getHeight()/2, myFont, "ABCDEFGHYJKLMNÑOPQRSTUVWXYZ ", getVertexBufferObjectManager());
         myLetter.setColor(Color.BLACK);
         letra = laLetra;
         myLetter.setText(laLetra);
