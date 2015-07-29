@@ -128,11 +128,9 @@ public class Word {
         return null;
     }
 
-    public String getTheWord(){return word;}
     public String getClue(){
         return clue;
     }
-
 
     public Celda getNextCeldaTo(int rowBackCell, int colBackCell){
         int next = 0;
@@ -147,31 +145,6 @@ public class Word {
             }
         }
         return null;
-    }
-    public Celda getBackCeldaTo(int rowBackCell, int colBackCell){
-        int current = 0;
-        for(Celda celda : celdas){
-            if(celda.isEqualsRowCol(rowBackCell, colBackCell)){
-                if(current<=0){
-                    current = 1;
-                }
-                celdas.get(current-1).selectMainCelda();
-                return  celdas.get(current-1);
-            }
-            current++;
-        }
-        return null;
-    }
-
-    public void showWord(){
-        for(Celda celda : celdas){
-            celda.showLetra();
-        }
-    }
-    public void hideWord(){
-        for(Celda celda : celdas){
-            celda.hideLetra();
-        }
     }
 }
 

@@ -48,7 +48,7 @@ public class Grilla {
         scene.attachChild(rectangulo);
         //scene.registerTouchArea(rectangulo);
         String [][] unaGrilla =  {//ES AL REVES
-                {"e","I","H","A","L"},//COLUMNA 1
+                {"E","I","H","U","A"},//COLUMNA 1
                 {"P","O","D","E","R"},
                 {"H","I","J","O","S"},
                 {"P","O","L","O","S"},
@@ -56,13 +56,13 @@ public class Grilla {
                 {"V","I","S","T","Z"},
                 };
 
-        //wordsHorizontal.add(new Word("HOLA", 0, 0, 0, this, scene));
-        //wordsHorizontal.add(new Word("Victor", 1, 0, 0, this, scene));
-        //wordsHorizontal.add(new Word("RONEL", 3, 0, 0, this, scene));
+        //wordsHorizontal.add(new Word("hola", 0, 0, 0, this, scene));
+        //wordsHorizontal.add(new Word("VictorOZ", 1, 0, 0, this, scene));
+        //wordsHorizontal.add(new Word(RONEL", 3, 0, 0, this, scene));
         //wordsVertical.add(new Word("AVECAHTQWSDX", 0, 0, 1, this, scene));
-        wordsHorizontal.add(new Word("FER","Hola mundo", 0, 0, 0, this, rectangulo, scene));
-        wordsHorizontal.add(new Word("VicZ", "Este es mi segundo nombre", 1, 0, 0, this, rectangulo,scene));
-        wordsHorizontal.add(new Word("CZZZZ", "Es un apellido que te contradice", 3, 0, 0, this, rectangulo,scene));
+        wordsHorizontal.add(new Word("LIBRO","Hola mundo", 0, 0, 0, this, rectangulo, scene));
+        wordsHorizontal.add(new Word("HEctorZ", "Este es mi segundo nombre", 1, 0, 0, this, rectangulo,scene));
+        wordsHorizontal.add(new Word("GAS", "Es un apellido que te contradice", 3, 0, 0, this, rectangulo,scene));
         wordsVertical.add(new Word("AVECAHTQWSDX", "seleccion al azar de caracteres", 0, 0, 1, this, rectangulo,scene));
         //recorremos la grilla
         /*
@@ -88,32 +88,42 @@ public class Grilla {
     public ITextureRegion getCeldaTextureRegion() {
         return celdaTextureRegion;
     }
-    public VertexBufferObjectManager getVertexBufferObjectManager() {return vertexBufferObjectManager;}
+
+    public VertexBufferObjectManager getVertexBufferObjectManager() {
+        return vertexBufferObjectManager;
+    }
+
     public Font getMyFont() {
         return myFont;
     }
+
     public ArrayList<Word> getWordsVertical() {
         return wordsVertical;
     }
+
     public ArrayList<Word> getWordsHorizontal() {
         return wordsHorizontal;
     }
+
     public Word getSelectedWord() {
         return selectedWord;
     }
+
     public void setSelectedWord(Word selectedWord) {
         this.selectedWord = selectedWord;
     }
+
     public Celda getSelectedCelda() {
         return selectedCelda;
     }
+
     public void setSelectedCelda(Celda selectedCelda) {
         this.selectedCelda = selectedCelda;
     }
 
     public void writeInCell(String aLetter){
         selectedCelda.selectSecondaryCelda();
-        selectedCelda.setText(aLetter);
+        selectedCelda.setLetra(aLetter);
         selectNextCell();
     }
     public void selectNextCell(){
@@ -123,27 +133,5 @@ public class Grilla {
             selectedCelda = newSelectCelda;
         }
 
-    }
-    public void delWriteInCell(){
-        selectedCelda.selectSecondaryCelda();
-        selectedCelda.setText("");
-        selectBackCell();
-    }
-    public void selectBackCell(){
-        Celda newSelectCelda;
-        newSelectCelda = selectedWord.getBackCeldaTo(selectedCelda.getRow(), selectedCelda.getCol());
-        if(newSelectCelda != null){
-            selectedCelda = newSelectCelda;
-        }
-
-    }
-
-    public void showGrilla(){
-        for(Word word : wordsHorizontal){word.showWord();}
-        for(Word word : wordsVertical){word.showWord();}
-    }
-    public void cleanGrilla(){
-        for(Word word : wordsHorizontal){word.hideWord();}
-        for(Word word : wordsVertical){word.hideWord();}
     }
 }

@@ -96,12 +96,10 @@ public class Celda extends Sprite{
         this.words.add(theWord);
     }
 
-    public void setText(String unaLetra){
+    public void setLetra(String unaLetra){
         //letra = unaLetra;
         myLetter.setText(unaLetra);
     }
-    public void showLetra(){myLetter.setText(this.letra);}
-    public void hideLetra(){myLetter.setText("");}
     @Override
     public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY){
         //boolean de control
@@ -125,14 +123,10 @@ public class Celda extends Sprite{
                     }
                     myGrilla.setSelectedWord(words.get(indexSelect));
                     myGrilla.setSelectedCelda(this);
-
                 }
                 words.get(indexSelect).selectWord();
                 if(Bridge.theHeadBoard != null)
                     Bridge.theHeadBoard.setMyTextClue(words.get(indexSelect).getClue());
-                if(Bridge.theFootBoard!=null){
-                    Bridge.theFootBoard.activateButtonsLetters(myGrilla.getSelectedWord().getTheWord());
-                }
 
             }
             selectMainCelda();
