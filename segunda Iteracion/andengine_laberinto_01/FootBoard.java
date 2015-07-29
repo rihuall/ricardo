@@ -74,7 +74,7 @@ public class FootBoard extends Rectangle{
             unBotonFoot.attachChild(unTextofoot);
             this.buttomTextLytics.add(unTextofoot);
             this.buttomLytics.add(unBotonFoot);
-            this.attachChild(unBotonFoot);
+            //this.attachChild(unBotonFoot);
             scene.registerTouchArea(unBotonFoot);
         }
     }
@@ -121,7 +121,7 @@ public class FootBoard extends Rectangle{
                     @Override
                     public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
                         if (pSceneTouchEvent.isActionUp()) {
-                            //hace algo especial (Mostrar grilla)
+                            //hace algo especial (Mostrar ocultar grilla)
                             if(isShow){
                                 if(Bridge.theGrilla!= null){//mostramos resultado
                                     Bridge.theGrilla.showGrilla();
@@ -146,8 +146,16 @@ public class FootBoard extends Rectangle{
                 pVertexBufferObjectManager) {
                     @Override
                     public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-                        if (pSceneTouchEvent.isActionUp()) {
-                            //hace algo especial
+                        if (pSceneTouchEvent.isActionUp()) {//generar nueva grilla
+                            if(Bridge.theGrilla !=  null){
+                                Bridge.theGrilla.generar();
+                                if(Bridge.theHeadBoard != null){
+                                    Bridge.theHeadBoard.setMyTextClue("Nueva grilla "+Bridge.numGrilla);
+                                }
+                                if(Bridge.theFootBoard!=null){
+                                    Bridge.theFootBoard.detachChildren();
+                                }
+                            }
                         }
                         return true;
                         //super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY)
@@ -170,6 +178,7 @@ public class FootBoard extends Rectangle{
         scene.registerTouchArea(botonFoot2);
         scene.registerTouchArea(botonFoot3);
     }
+
     public void activateButtonsLetters(String theWord){
         //Activar los botones
         if(buttomTextLytics != null && theWord.length()<=buttomTextLytics.size()){

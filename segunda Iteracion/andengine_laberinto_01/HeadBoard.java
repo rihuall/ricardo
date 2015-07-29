@@ -28,7 +28,7 @@ public class HeadBoard extends Rectangle{
 
         myTextClue = new Text(this.getWidth()/2, this.getHeight()/2, myFont, "ABCDEFGHYJKLMNÑOPQRSTUVWXYZ", getVertexBufferObjectManager());
         myTextClue.setColor(Color.BLACK);//color del texto
-        myTextClue.setText("Hola mundo");//falta que el texto se autoajuste a la pantalla
+        myTextClue.setText("Primera Grilla");//falta que el texto se autoajuste a la pantalla
 
         this.setColor(0.65f, 0.46f, 0.35f);//Colo de fondo de la cabecera
         this.attachChild(myTextClue);

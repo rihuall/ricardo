@@ -17,35 +17,45 @@ public class Grilla {
     public static final int SIZE = 480;
 
     private ITextureRegion celdaTextureRegion;
-    VertexBufferObjectManager vertexBufferObjectManager;
+    private VertexBufferObjectManager vertexBufferObjectManager;
     private Font myFont;
-
+    private Scene myScene;
+    Rectangle rectangulo;
     private ArrayList<Word> wordsHorizontal;
     private ArrayList<Word> wordsVertical;
     private Word selectedWord;
     private Celda selectedCelda;
 
-    public Grilla(ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, Font myFont){
+    public Grilla(ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, Font myFont, Scene scene){
         this.celdaTextureRegion = pTextureRegion;
         this.vertexBufferObjectManager = pVertexBufferObjectManager;
         this.myFont = myFont;
+        this.myScene = scene;
 
+        generar();
+    }
+
+    public void generar(){
+        if(this.celdaTextureRegion == null ||
+                this.vertexBufferObjectManager == null ||
+                this.myFont == null ||
+                this.myScene == null
+                ){return;}
+        Bridge.numGrilla++;
         wordsHorizontal = new ArrayList<Word>();
         wordsVertical = new ArrayList<Word>();
         selectedWord = null;
         selectedCelda = null;
-
-    }
-
-    public void generar(Scene scene){
-
-        Rectangle rectangulo = new Rectangle(
+        if(rectangulo!= null){
+            myScene.detachChild(rectangulo);
+        }
+        rectangulo = new Rectangle(
                 MainActivity.CAMARA_WIDTH/2,
                 MainActivity.CAMARA_HEIGHT/2,
                 MainActivity.CAMARA_WIDTH,
                 MainActivity.CAMARA_WIDTH, vertexBufferObjectManager);
         rectangulo.setColor(0.0f, 0.0f, 0.0f);
-        scene.attachChild(rectangulo);
+        myScene.attachChild(rectangulo);
         //scene.registerTouchArea(rectangulo);
         String [][] unaGrilla =  {//ES AL REVES
                 {"e","I","H","A","L"},//COLUMNA 1
@@ -60,10 +70,10 @@ public class Grilla {
         //wordsHorizontal.add(new Word("Victor", 1, 0, 0, this, scene));
         //wordsHorizontal.add(new Word("RONEL", 3, 0, 0, this, scene));
         //wordsVertical.add(new Word("AVECAHTQWSDX", 0, 0, 1, this, scene));
-        wordsHorizontal.add(new Word("FER","Hola mundo", 0, 0, 0, this, rectangulo, scene));
-        wordsHorizontal.add(new Word("VicZ", "Este es mi segundo nombre", 1, 0, 0, this, rectangulo,scene));
-        wordsHorizontal.add(new Word("CZZZZ", "Es un apellido que te contradice", 3, 0, 0, this, rectangulo,scene));
-        wordsVertical.add(new Word("AVECAHTQWSDX", "seleccion al azar de caracteres", 0, 0, 1, this, rectangulo,scene));
+        wordsHorizontal.add(new Word("FER","Hola mundo", 0, 0, 0, this, rectangulo, myScene));
+        wordsHorizontal.add(new Word("VicZ", "Este es mi segundo nombre", 1, 0, 0, this, rectangulo, myScene));
+        wordsHorizontal.add(new Word("CZZZZ", "Es un apellido que te contradice", 3, 0, 0, this, rectangulo,myScene));
+        wordsVertical.add(new Word("AVECAHTQWSDX", "seleccion al azar de caracteres", 0, 0, 1, this, rectangulo, myScene));
         //recorremos la grilla
         /*
         for(int i = 0; i < grilla.length; i++){

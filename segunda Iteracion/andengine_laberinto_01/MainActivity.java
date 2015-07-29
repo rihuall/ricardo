@@ -66,8 +66,8 @@ public class MainActivity extends SimpleBaseGameActivity {
         headBoard.addToScene(scene);
         Bridge.theHeadBoard = headBoard;
         //Celda unaCelda = new Celda(camera.getWidth()/2, camera.getHeight()/2, celdaTextureRegion, getVertexBufferObjectManager(), myFont);
-        Grilla myGrilla = new Grilla(celdaTextureRegion, getVertexBufferObjectManager(), myFont);
-        myGrilla.generar(scene);
+        Grilla myGrilla = new Grilla(celdaTextureRegion, getVertexBufferObjectManager(), myFont, scene);
+        myGrilla.generar();
         Bridge.theGrilla = myGrilla;
         //unaCelda.addToScene(scene);
         FootBoard footBoard = new FootBoard(celdaTextureRegion, getVertexBufferObjectManager(), myFont, scene);

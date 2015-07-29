@@ -8,5 +8,5 @@ public class Bridge {
     public static Grilla theGrilla;
     public static FootBoard theFootBoard;
 
-
+    public static int numGrilla = 0;
 }
