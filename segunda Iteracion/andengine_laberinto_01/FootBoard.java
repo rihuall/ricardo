@@ -150,15 +150,19 @@ public class FootBoard extends Rectangle{
                     @Override
                     public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
                         if (pSceneTouchEvent.isActionUp()) {//generar nueva grilla
+                            Bridge.generateScene();
+                            /*
                             if(Bridge.theGrilla !=  null){
+                                Bridge.theGrilla.registerArea();
                                 Bridge.theGrilla.generar();
+                                Bridge.theGrilla.registerTouchAreaInScene();
                                 if(Bridge.theHeadBoard != null){
                                     Bridge.theHeadBoard.setMyTextClue("Nueva grilla "+Bridge.numGrilla);
                                 }
                                 if(Bridge.theFootBoard!=null){
                                     Bridge.theFootBoard.detachChildren();
                                 }
-                            }
+                            }*/
                         }
                         return true;
                         //super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY)

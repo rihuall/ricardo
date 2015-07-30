@@ -7,6 +7,7 @@ import com.example.mipc.andengine_laberinto_01.CrosswordGenerator.WordsDic;
 
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
+import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObject;
@@ -33,6 +34,8 @@ public class Grilla {
     private ArrayList<Word> wordsVertical;
     private Word selectedWord;
     private Celda selectedCelda;
+
+    private HashMap<String, Celda> celdasUnicas;
 
     public Grilla(ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, Font myFont, Scene scene){
         this.celdaTextureRegion = pTextureRegion;
@@ -66,7 +69,12 @@ public class Grilla {
                 MainActivity.CAMARA_WIDTH/2,
                 MainActivity.CAMARA_HEIGHT/2,
                 MainActivity.CAMARA_WIDTH,
-                MainActivity.CAMARA_WIDTH, vertexBufferObjectManager);
+                MainActivity.CAMARA_WIDTH, vertexBufferObjectManager){
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY){
+                return true;
+            }
+        };
         rectangulo.setColor(0.0f, 0.0f, 0.0f);
         myScene.attachChild(rectangulo);
         //scene.registerTouchArea(rectangulo);
@@ -82,15 +90,24 @@ public class Grilla {
         HashMap<Integer, WordInGrid> horizontalAnnex = gen.getHorizontalAnnex();
         HashMap<Integer, WordInGrid> verticalAnnex = gen.getVerticalAnnex();
 
-        wordsHorizontal = uploadInformation(horizontalAnnex, dic, 0);
-        wordsVertical = uploadInformation(verticalAnnex, dic, 1);
+        HashMap<String, Celda> celdasunicas = new HashMap<String, Celda>();
 
+        wordsHorizontal = uploadInformation(horizontalAnnex, dic, 0, celdasunicas);
+        wordsVertical = uploadInformation(verticalAnnex, dic, 1, celdasunicas);
+
+        celdasUnicas = celdasunicas;
+        /*
+        registerTouchAreaInScene(celdasunicas, myScene);
+        myScene.registerTouchArea(rectangulo);
+        */
         System.out.println("cant horizontal " + wordsHorizontal.size());
         System.out.println("cant vertical "+wordsVertical.size());
         grid.show();
         gen = null;
         words = null;
         dic =null;
+        Bridge.numGrilla++;
+        if(Bridge.theHeadBoard!=null) Bridge.theHeadBoard.setMyTextClue("Grilla " +Bridge.numGrilla );
         /*
         wordsHorizontal.add(new Word("RIHUALL","Hola mundo", 0, 0, 0, this, rectangulo, myScene));
         wordsHorizontal.add(new Word("RAUL", "Este es mi segundo nombre", 1, 0, 0, this, rectangulo, myScene));
@@ -99,7 +116,7 @@ public class Grilla {
         */
     }
 
-    private ArrayList<Word> uploadInformation(HashMap<Integer, WordInGrid> annex, WordsDic dic, int sentidoHV){
+    private ArrayList<Word> uploadInformation(HashMap<Integer, WordInGrid> annex, WordsDic dic, int sentidoHV, HashMap<String, Celda> celdasunicas){
         ArrayList<Word> wordsHV = new ArrayList<Word>();
         List<Integer> list = new ArrayList<Integer>(annex.keySet());
         Collections.sort(list);
@@ -110,7 +127,9 @@ public class Grilla {
                     dic.getDictionary().get(annex.get(key).getWord()),
                     annex.get(key).getCol(),
                     annex.get(key).getRow(),
-                    sentidoHV, this, rectangulo, myScene));
+                    sentidoHV, this, rectangulo, myScene,
+                    celdasunicas
+            ));
         }
         return wordsHV;
     }
@@ -183,5 +202,21 @@ public class Grilla {
     public void cleanGrilla(){
         for(Word word : wordsHorizontal){word.hideWord();}
         for(Word word : wordsVertical){word.hideWord();}
+    }
+
+    //private void registerTouchAreaInScene(HashMap<String, Celda> celdasunicas, Scene scene){//guarda solo una referencia de cada celda
+    public void registerTouchAreaInScene(){//guarda solo una referencia de cada celda
+
+        List<String> list = new ArrayList<String>(celdasUnicas.keySet());
+        int i = 0;
+        for(String clave : list){
+            myScene.registerTouchArea(celdasUnicas.get(clave));
+            i++;
+        }
+        System.out.println("cantidad de celdas total ---- "+i);
+        registerArea();
+    }
+    public void registerArea(){
+        myScene.registerTouchArea(rectangulo);
     }
 }

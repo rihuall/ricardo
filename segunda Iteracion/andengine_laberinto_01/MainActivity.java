@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -32,15 +33,17 @@ public class MainActivity extends SimpleBaseGameActivity {
     public static final int CAMARA_HEIGHT = 800;
 
     private Camera camera;
-    private Scene scene;
+    public Scene backScene;
 
     private BitmapTextureAtlas myAtlas;
-    private ITextureRegion celdaTextureRegion;
+    public ITextureRegion celdaTextureRegion;
+    public Engine myEngine;
 
     //private Celda unaCelda;
 
      @Override
     protected void onCreateResources() throws IOException {//#2
+
          BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");//indicamos donde están las imágenes
          myAtlas = new BitmapTextureAtlas(getTextureManager(), 1000, 1000, TextureOptions.DEFAULT);//Atlas lugar en memoria donde estaran las iamgenes
          celdaTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(myAtlas, this, "celda.png", 0, 0);//ubicamos la imagen en el atlas
@@ -51,8 +54,11 @@ public class MainActivity extends SimpleBaseGameActivity {
 
     @Override
     protected Scene onCreateScene() {//#3
-        this.scene = new Scene();
-        this.scene.setBackground(new Background(0.9804f, 0.6274f, 0.8784f));
+        myEngine = this.mEngine;
+        Bridge.theMainActivity =  this;
+
+        this.backScene= new Scene();
+        this.backScene.setBackground(new Background(0.9804f, 0.6274f, 0.8784f));
         //Probamos la celda
 
         FontFactory.setAssetBasePath("fuentes/");
@@ -63,19 +69,21 @@ public class MainActivity extends SimpleBaseGameActivity {
 
         //creamos elementos visibles
         HeadBoard headBoard = new HeadBoard(getVertexBufferObjectManager(), myFont);//sin patron singleton
-        headBoard.addToScene(scene);
+        headBoard.addToScene(backScene);
         Bridge.theHeadBoard = headBoard;
         //Celda unaCelda = new Celda(camera.getWidth()/2, camera.getHeight()/2, celdaTextureRegion, getVertexBufferObjectManager(), myFont);
-        Grilla myGrilla = new Grilla(celdaTextureRegion, getVertexBufferObjectManager(), myFont, scene);
+        Grilla myGrilla = new Grilla(celdaTextureRegion, getVertexBufferObjectManager(), myFont, backScene);
         myGrilla.generar();
         Bridge.theGrilla = myGrilla;
         //unaCelda.addToScene(scene);
-        FootBoard footBoard = new FootBoard(celdaTextureRegion, getVertexBufferObjectManager(), myFont, scene);
+        FootBoard footBoard = new FootBoard(celdaTextureRegion, getVertexBufferObjectManager(), myFont, backScene);
         Bridge.theFootBoard = footBoard;
         //footBoard.addToScene(scene);
 
         //scene.attachChild(rectangulo);
-        return this.scene;
+        myGrilla.registerTouchAreaInScene();
+
+        return this.backScene;
     }
 
     @Override
@@ -89,6 +97,7 @@ public class MainActivity extends SimpleBaseGameActivity {
                 camera);
         return engineOptions;
     }
+
 }
 // 1.- onCreateEngineOptions() --- creas las opciones del motor
 // 2.- onCreateResources() --- cargas los elementos a usar

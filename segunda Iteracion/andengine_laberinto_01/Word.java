@@ -7,6 +7,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by MIPC on 11/06/2015.
@@ -18,7 +19,8 @@ public class Word {
     private ArrayList<Celda> celdas;
 
     //public Word(String theWord, int row, int  col, int sentidoHV, Grilla theGrilla, Scene scene){//ITextureRegion celTRegion, VertexBufferObjectManager vertBuffObjMngr, Font myFont, Scene scene){
-    public Word(String theWord, String theClue, int row, int  col, int sentidoHV, Grilla theGrilla, Rectangle rectangulo, Scene scene){//ITextureRegion celTRegion, VertexBufferObjectManager vertBuffObjMngr, Font myFont, Scene scene){
+    public Word(String theWord, String theClue, int row, int  col, int sentidoHV,
+                Grilla theGrilla, Rectangle rectangulo, Scene scene, HashMap<String, Celda> celdasunicas){//ITextureRegion celTRegion, VertexBufferObjectManager vertBuffObjMngr, Font myFont, Scene scene){
         this.grilla = theGrilla;
         this.word = theWord;
         this.clue = theClue;
@@ -56,11 +58,12 @@ public class Word {
                 celda.addWord(this);//guardo pertenencia de la celda
                 celda.setGrilla(this.grilla);
                 //celda.addToScene(scene);
-                scene.registerTouchArea(celda);
+                //scene.registerTouchArea(celda);
                 rectangulo.attachChild(celda);
                 //celdas[i][j] = celda;
                 celdas.add(celda);//OJO con el object
 
+                celdasunicas.put(""+celda.getRow()+""+celda.getCol(), celda);
             }
         }else{//Vertical (False) verificar si la celda ya esta
             //debe aumentar en row (EJE Y)
@@ -78,9 +81,7 @@ public class Word {
                                 exists = true;
                                 break;
                             }
-
                         }
-
                     }
                 }
                 if(celda == null){
@@ -100,11 +101,13 @@ public class Word {
                 celda.setGrilla(this.grilla);
                 if(!exists){
                     //celda.addToScene(scene);
-                    scene.registerTouchArea(celda);
+                    //scene.registerTouchArea(celda);
                     rectangulo.attachChild(celda);
                 }
                 //celdas[i][j] = celda;
                 celdas.add(celda);//OJO con el object
+
+                celdasunicas.put(""+celda.getRow()+""+celda.getCol(), celda);
             }
         }
     }
