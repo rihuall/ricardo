@@ -60,6 +60,9 @@ public class FootBoard extends Rectangle{
 
                         @Override
                         public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+                            if(!this.isVisible()){
+                                return true;
+                            }
                             if (pSceneTouchEvent.isActionUp()) {
                                 //unTextofoot.setText("N");
                                 if (Bridge.theGrilla != null) {
@@ -74,7 +77,8 @@ public class FootBoard extends Rectangle{
             unBotonFoot.attachChild(unTextofoot);
             this.buttomTextLytics.add(unTextofoot);
             this.buttomLytics.add(unBotonFoot);
-            //this.attachChild(unBotonFoot);
+            this.buttomLytics.get(i).setVisible(false);
+            this.attachChild(unBotonFoot);
             scene.registerTouchArea(unBotonFoot);
         }
     }
@@ -133,7 +137,6 @@ public class FootBoard extends Rectangle{
                                     isShow = true;
                                 }
                             }
-
                         }
                         return true;
                         //super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY)
@@ -178,17 +181,22 @@ public class FootBoard extends Rectangle{
         scene.registerTouchArea(botonFoot2);
         scene.registerTouchArea(botonFoot3);
     }
-
     public void activateButtonsLetters(String theWord){
         //Activar los botones
         if(buttomTextLytics != null && theWord.length()<=buttomTextLytics.size()){
-            this.detachChildren();
+            //this.detachChildren();
             theWord = shuffle(theWord);
-            for(int i = 0; i < theWord.length(); i++){//3 botones de la derecha
+            int fal = 0;
+            for(int i = 0; i < theWord.length(); i++){
                 buttomTextLytics.get(i).setText(theWord.substring(i,i+1));
-                this.attachChild(buttomLytics.get(i));
+                this.getChildByIndex(i).setVisible(true);
+                //buttomLytics.get(i).setVisible(true);
+                //this.attachChild(buttomLytics.get(i));
+                fal=i;
                 //buttomTextLytics.get(i).setText("M");
-
+            }
+            for(int j = fal+1; j <buttomLytics.size(); j++){
+                buttomLytics.get(j).setVisible(false);
             }
         }
     }

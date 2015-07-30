@@ -173,5 +173,13 @@ public class Word {
             celda.hideLetra();
         }
     }
+    public void detachWord(Scene scene){//para que no sea detectado por ele evento touch
+        for(Celda celda : celdas){
+            //celda.detachChildren();
+            //scene.detachChild(celda);
+            celda.setVisible(false);
+        }
+        //celdas = null;
+    }
 }
 

@@ -108,7 +108,7 @@ public class WordsDic {
         dictionary.put("komputer", "mylce urzdzenie");
         dictionary.put("fiszka", "wyparta przez dyskietk");
         dictionary.put("folder", "zestawienie plikw katalog");
-        dictionary.put("furtka ", "rama komputer penicy");
+        dictionary.put("furtka", "rama komputer penicy");
         dictionary.put("Word", "komputerowy edytor tekstw");
         dictionary.put("Wlan", "bezprzewodowa komputerowa sie");
         dictionary.put("worm", "wirus komputerowy rozprzestrzeniajcy");

@@ -55,7 +55,12 @@ public class Grilla {
         selectedWord = null;
         selectedCelda = null;
         if(rectangulo!= null){
-            myScene.detachChild(rectangulo);
+            for(Word word:wordsHorizontal)
+                word.detachWord(myScene);
+            for(Word word:wordsVertical)
+                word.detachWord(myScene);
+            //rectangulo.detachChildren();
+            //myScene.detachChild(rectangulo);
         }
         rectangulo = new Rectangle(
                 MainActivity.CAMARA_WIDTH/2,
@@ -74,7 +79,6 @@ public class Grilla {
 
         int usedCount = gen.generate();
 
-
         HashMap<Integer, WordInGrid> horizontalAnnex = gen.getHorizontalAnnex();
         HashMap<Integer, WordInGrid> verticalAnnex = gen.getVerticalAnnex();
 
@@ -88,7 +92,7 @@ public class Grilla {
         words = null;
         dic =null;
         /*
-        wordsHorizontal.add(new Word("RHUALL","Hola mundo", 0, 0, 0, this, rectangulo, myScene));
+        wordsHorizontal.add(new Word("RIHUALL","Hola mundo", 0, 0, 0, this, rectangulo, myScene));
         wordsHorizontal.add(new Word("RAUL", "Este es mi segundo nombre", 1, 0, 0, this, rectangulo, myScene));
         wordsHorizontal.add(new Word("HUAMAN", "Es un apellido que te contradice", 3, 0, 0, this, rectangulo,myScene));
         wordsVertical.add(new Word("AVECAHTQWSDX", "seleccion al azar de caracteres", 0, 0, 1, this, rectangulo, myScene));
@@ -149,6 +153,7 @@ public class Grilla {
         selectNextCell();
     }
     public void selectNextCell(){
+        if(selectedCelda==null)return;
         Celda newSelectCelda;
         newSelectCelda = selectedWord.getNextCeldaTo(selectedCelda.getRow(), selectedCelda.getCol());
         if(newSelectCelda != null){
@@ -157,6 +162,7 @@ public class Grilla {
 
     }
     public void delWriteInCell(){
+        if(selectedCelda==null)return;
         selectedCelda.selectSecondaryCelda();
         selectedCelda.setText("");
         selectBackCell();

@@ -31,7 +31,7 @@ public class Celda extends Sprite{
     public static final float SELECT_MAIN = 150;
     public static final float SELECT_SECONDARY = 200;
     //public static final float NO_SELECT = 256;
-    public static final float NO_SELECT = 0;
+    public static final float NO_SELECT = 256.0f;
     //private BitmapTextureAtlas myAtlas;
     //private ITextureRegion celdaTextureRegion;
     //private Sprite celdaSprite;
@@ -62,9 +62,8 @@ public class Celda extends Sprite{
 
         this.attachChild(selectMain);
         this.attachChild(myLetter);
-
-
     }
+
     public void selectMainCelda(){
         selectMain.setColor(0.3f, 0.5f, 0.2f, SELECT_MAIN);
     }
@@ -73,7 +72,7 @@ public class Celda extends Sprite{
     }
     public void deselectCelda(){
         //selectMain.setColor(256.0f, 256.0f, 0.0f);
-        selectMain.setColor(0.0f, 0.0f, 0.0f, 256.0f);
+        selectMain.setColor(0.0f, 0.0f, 0.0f, NO_SELECT);
     }
     public void setRowCol(int posRow, int posCol){
         this.posRow = posRow;
@@ -106,6 +105,9 @@ public class Celda extends Sprite{
     public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY){
         //boolean de control
         //Cuando el modifier empieza
+        if(!this.isVisible()){
+            return true;
+        }
         if(pSceneTouchEvent.isActionUp()){
             if(words!=null){
                 if(myGrilla!=null){
