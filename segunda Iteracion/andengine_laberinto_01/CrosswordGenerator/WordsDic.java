@@ -8,6 +8,7 @@ import java.util.*;
 public class WordsDic {
 
     private Hashtable<String, String> dictionary;
+    private int numWords = 6;
 
     public WordsDic(){
 
@@ -22,7 +23,9 @@ public class WordsDic {
             dictionary = new Hashtable<String, String>();
         }
     }
-
+    public void setNumWords(int numWords){
+        this.numWords = numWords;
+    }
     private void readDictionary() throws IOException{
         /*
         String fileName = "dictionary.txt";
@@ -121,6 +124,24 @@ public class WordsDic {
     }
 
     public Hashtable<String, String> getDictionary() {
+        //devolveremos solo una parte del diccionario
+        if(numWords>dictionary.size()) return dictionary;
+
+        int ini = (new Random()).nextInt(dictionary.size());
+        int resto = dictionary.size() - ini - 1;
+        List<String> list = new ArrayList<String>(dictionary.keySet());
+        Hashtable<String, String> newdictionary;
+        newdictionary = new Hashtable<String, String>();
+        if(resto < numWords){
+            ini = ini - numWords;
+            if(ini<0){
+                ini = 0;
+            }
+        }
+        for(int i = ini; i< ini+numWords; i++){
+            newdictionary.put(list.get(i), dictionary.get(list.get(i)));
+        }
+        dictionary = newdictionary;
         return dictionary;
     }
 
