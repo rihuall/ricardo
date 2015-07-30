@@ -52,7 +52,7 @@ public class Celda extends Sprite{
         this.selectMain = new Rectangle(this.getWidth() / 2, this.getHeight() / 2,32,32, getVertexBufferObjectManager());
         selectMain.setColor(0.9f, 0.1f, 0.2f, NO_SELECT);//.detachChild(this);
 
-        myLetter = new Text(this.getWidth()/2, this.getHeight()/2, myFont, "ABCDEFGHYJKLMNÑOPQRSTUVWXYZ", getVertexBufferObjectManager());
+        myLetter = new Text(this.getWidth()/2, this.getHeight()/2, myFont, "ABCDEFGHYJKLMNÑOPQRSTUVWXYZ ", getVertexBufferObjectManager());
         myLetter.setColor(Color.BLACK);
         letra = laLetra;
         myLetter.setText(laLetra);
@@ -96,10 +96,12 @@ public class Celda extends Sprite{
         this.words.add(theWord);
     }
 
-    public void setLetra(String unaLetra){
+    public void setText(String unaLetra){
         //letra = unaLetra;
         myLetter.setText(unaLetra);
     }
+    public void showLetra(){myLetter.setText(this.letra);}
+    public void hideLetra(){myLetter.setText("");}
     @Override
     public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY){
         //boolean de control
@@ -123,10 +125,14 @@ public class Celda extends Sprite{
                     }
                     myGrilla.setSelectedWord(words.get(indexSelect));
                     myGrilla.setSelectedCelda(this);
+
                 }
                 words.get(indexSelect).selectWord();
                 if(Bridge.theHeadBoard != null)
                     Bridge.theHeadBoard.setMyTextClue(words.get(indexSelect).getClue());
+                if(Bridge.theFootBoard!=null){
+                    Bridge.theFootBoard.activateButtonsLetters(myGrilla.getSelectedWord().getTheWord());
+                }
 
             }
             selectMainCelda();

@@ -1,5 +1,10 @@
 package com.example.mipc.andengine_laberinto_01;
 
+import com.example.mipc.andengine_laberinto_01.CrosswordGenerator.Generator;
+import com.example.mipc.andengine_laberinto_01.CrosswordGenerator.Grid;
+import com.example.mipc.andengine_laberinto_01.CrosswordGenerator.WordInGrid;
+import com.example.mipc.andengine_laberinto_01.CrosswordGenerator.WordsDic;
+
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.font.Font;
@@ -8,6 +13,9 @@ import org.andengine.opengl.vbo.VertexBufferObject;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by MIPC on 27/05/2015.
@@ -17,66 +25,90 @@ public class Grilla {
     public static final int SIZE = 480;
 
     private ITextureRegion celdaTextureRegion;
-    VertexBufferObjectManager vertexBufferObjectManager;
+    private VertexBufferObjectManager vertexBufferObjectManager;
     private Font myFont;
-
+    private Scene myScene;
+    Rectangle rectangulo;
     private ArrayList<Word> wordsHorizontal;
     private ArrayList<Word> wordsVertical;
     private Word selectedWord;
     private Celda selectedCelda;
 
-    public Grilla(ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, Font myFont){
+    public Grilla(ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, Font myFont, Scene scene){
         this.celdaTextureRegion = pTextureRegion;
         this.vertexBufferObjectManager = pVertexBufferObjectManager;
         this.myFont = myFont;
+        this.myScene = scene;
 
+        generar();
+    }
+
+    public void generar(){
+        if(this.celdaTextureRegion == null ||
+                this.vertexBufferObjectManager == null ||
+                this.myFont == null ||
+                this.myScene == null
+                ){return;}
+        Bridge.numGrilla++;
         wordsHorizontal = new ArrayList<Word>();
         wordsVertical = new ArrayList<Word>();
         selectedWord = null;
         selectedCelda = null;
-
-    }
-
-    public void generar(Scene scene){
-
-        Rectangle rectangulo = new Rectangle(
+        if(rectangulo!= null){
+            myScene.detachChild(rectangulo);
+        }
+        rectangulo = new Rectangle(
                 MainActivity.CAMARA_WIDTH/2,
                 MainActivity.CAMARA_HEIGHT/2,
                 MainActivity.CAMARA_WIDTH,
                 MainActivity.CAMARA_WIDTH, vertexBufferObjectManager);
         rectangulo.setColor(0.0f, 0.0f, 0.0f);
-        scene.attachChild(rectangulo);
+        myScene.attachChild(rectangulo);
         //scene.registerTouchArea(rectangulo);
-        String [][] unaGrilla =  {//ES AL REVES
-                {"E","I","H","U","A"},//COLUMNA 1
-                {"P","O","D","E","R"},
-                {"H","I","J","O","S"},
-                {"P","O","L","O","S"},
-                {"Q","U","E","S","O"},
-                {"V","I","S","T","Z"},
-                };
+        Grid grid = new Grid(12,12);
+        WordsDic dic = new WordsDic();
 
-        //wordsHorizontal.add(new Word("hola", 0, 0, 0, this, scene));
-        //wordsHorizontal.add(new Word("VictorOZ", 1, 0, 0, this, scene));
-        //wordsHorizontal.add(new Word(RONEL", 3, 0, 0, this, scene));
-        //wordsVertical.add(new Word("AVECAHTQWSDX", 0, 0, 1, this, scene));
-        wordsHorizontal.add(new Word("LIBRO","Hola mundo", 0, 0, 0, this, rectangulo, scene));
-        wordsHorizontal.add(new Word("HEctorZ", "Este es mi segundo nombre", 1, 0, 0, this, rectangulo,scene));
-        wordsHorizontal.add(new Word("GAS", "Es un apellido que te contradice", 3, 0, 0, this, rectangulo,scene));
-        wordsVertical.add(new Word("AVECAHTQWSDX", "seleccion al azar de caracteres", 0, 0, 1, this, rectangulo,scene));
-        //recorremos la grilla
+        List<String> words = new ArrayList<String>(dic.getDictionary().keySet());
+
+        Generator gen = new Generator(grid, words);
+
+        int usedCount = gen.generate();
+
+
+        HashMap<Integer, WordInGrid> horizontalAnnex = gen.getHorizontalAnnex();
+        HashMap<Integer, WordInGrid> verticalAnnex = gen.getVerticalAnnex();
+
+        wordsHorizontal = uploadInformation(horizontalAnnex, dic, 0);
+        wordsVertical = uploadInformation(verticalAnnex, dic, 1);
+
+        System.out.println("cant horizontal " + wordsHorizontal.size());
+        System.out.println("cant vertical "+wordsVertical.size());
+        grid.show();
+        gen = null;
+        words = null;
+        dic =null;
         /*
-        for(int i = 0; i < grilla.length; i++){
-            for(int j = 0; j < grilla[0].length; j++){
-                Celda celda = new Celda((i+1)*Celda.SIZE_SIDE, (j+1)*Celda.SIZE_SIDE, celdaTextureRegion,  vertexBufferObjectManager,  myFont);
-                celda.setLetra(grilla[i][j]);
-                celda.setRowCol(i, j);
-                celda.setGrilla(this);
-                celda.addToScene(scene);
-                celdas[i][j] = celda;
-            }
-        }
+        wordsHorizontal.add(new Word("RHUALL","Hola mundo", 0, 0, 0, this, rectangulo, myScene));
+        wordsHorizontal.add(new Word("RAUL", "Este es mi segundo nombre", 1, 0, 0, this, rectangulo, myScene));
+        wordsHorizontal.add(new Word("HUAMAN", "Es un apellido que te contradice", 3, 0, 0, this, rectangulo,myScene));
+        wordsVertical.add(new Word("AVECAHTQWSDX", "seleccion al azar de caracteres", 0, 0, 1, this, rectangulo, myScene));
         */
+    }
+
+    private ArrayList<Word> uploadInformation(HashMap<Integer, WordInGrid> annex, WordsDic dic, int sentidoHV){
+        ArrayList<Word> wordsHV = new ArrayList<Word>();
+        List<Integer> list = new ArrayList<Integer>(annex.keySet());
+        Collections.sort(list);
+        for(Integer key : list){
+            System.out.println(" "+sentidoHV+" "+annex.get(key).getRow()+" - "+annex.get(key).getCol()+annex.get(key).getWord()+ "- "+dic.getDictionary().get(annex.get(key).getWord()));
+            wordsHV.add(new Word(
+                    annex.get(key).getWord(),
+                    dic.getDictionary().get(annex.get(key).getWord()),
+                    annex.get(key).getCol(),
+                    annex.get(key).getRow(),
+                    sentidoHV, this, rectangulo, myScene));
+        }
+        return wordsHV;
     }
 
     public void createCeldas(int origenConstant, int origenVariable, String word){
@@ -88,42 +120,32 @@ public class Grilla {
     public ITextureRegion getCeldaTextureRegion() {
         return celdaTextureRegion;
     }
-
-    public VertexBufferObjectManager getVertexBufferObjectManager() {
-        return vertexBufferObjectManager;
-    }
-
+    public VertexBufferObjectManager getVertexBufferObjectManager() {return vertexBufferObjectManager;}
     public Font getMyFont() {
         return myFont;
     }
-
     public ArrayList<Word> getWordsVertical() {
         return wordsVertical;
     }
-
     public ArrayList<Word> getWordsHorizontal() {
         return wordsHorizontal;
     }
-
     public Word getSelectedWord() {
         return selectedWord;
     }
-
     public void setSelectedWord(Word selectedWord) {
         this.selectedWord = selectedWord;
     }
-
     public Celda getSelectedCelda() {
         return selectedCelda;
     }
-
     public void setSelectedCelda(Celda selectedCelda) {
         this.selectedCelda = selectedCelda;
     }
 
     public void writeInCell(String aLetter){
         selectedCelda.selectSecondaryCelda();
-        selectedCelda.setLetra(aLetter);
+        selectedCelda.setText(aLetter);
         selectNextCell();
     }
     public void selectNextCell(){
@@ -133,5 +155,27 @@ public class Grilla {
             selectedCelda = newSelectCelda;
         }
 
+    }
+    public void delWriteInCell(){
+        selectedCelda.selectSecondaryCelda();
+        selectedCelda.setText("");
+        selectBackCell();
+    }
+    public void selectBackCell(){
+        Celda newSelectCelda;
+        newSelectCelda = selectedWord.getBackCeldaTo(selectedCelda.getRow(), selectedCelda.getCol());
+        if(newSelectCelda != null){
+            selectedCelda = newSelectCelda;
+        }
+
+    }
+
+    public void showGrilla(){
+        for(Word word : wordsHorizontal){word.showWord();}
+        for(Word word : wordsVertical){word.showWord();}
+    }
+    public void cleanGrilla(){
+        for(Word word : wordsHorizontal){word.hideWord();}
+        for(Word word : wordsVertical){word.hideWord();}
     }
 }
