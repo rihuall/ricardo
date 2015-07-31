@@ -80,7 +80,7 @@ public class Grilla {
         //scene.registerTouchArea(rectangulo);
         Grid grid = new Grid(12,12);
         WordsDic dic = new WordsDic();
-
+        dic.setNumWords(Bridge.numWordDict);
         List<String> words = new ArrayList<String>(dic.getDictionary().keySet());
 
         Generator gen = new Generator(grid, words);
