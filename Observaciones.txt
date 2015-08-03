@@ -1,4 +1,4 @@
-Observaciones Casos de Uso
+﻿Observaciones Casos de Uso
 -------------------------------------------------------
 - No entregó en la fecha
  
@@ -11,3 +11,5 @@ Observaciones tercer avance
 -------------------------------
 - hay muy pocos commits
 - Buen intento de colaboración
+ing. buenas tardes 
+queremos saber el cronograma de exposiciones por favor.
